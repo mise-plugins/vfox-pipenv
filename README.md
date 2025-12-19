@@ -7,7 +7,6 @@ This plugin can also be used with [mise](https://mise.jdx.dev/) via the vfox bac
 ## Requirements
 
 - Python 3.7+ must be installed and available in PATH
-- `curl` (for fetching version information)
 
 ## Installation
 
@@ -65,43 +64,13 @@ vfox use pipenv@2024.0.1
 mise use vfox:pipenv@2024.0.1
 ```
 
-## Automatic Virtualenv Activation (mise only)
+## Automatic Virtualenv Activation
 
-To automatically activate your project's pipenv virtualenv when entering a directory, add the module directive to your `mise.toml`:
+When you have pipenv configured and enter a directory containing a `Pipfile`, the plugin automatically activates the project's virtualenv (if it exists). This sets:
 
-```toml
-[tools]
-"vfox:pipenv" = "latest"
-
-[env]
-_.module = "pipenv"
-```
-
-This will:
-
-1. Set `VIRTUAL_ENV` to the virtualenv path
-2. Set `PIPENV_ACTIVE=1`
-3. Add the virtualenv's `bin` directory to your `PATH`
-
-### Custom Pipfile Location
-
-If your `Pipfile` is in a non-standard location:
-
-```toml
-[tools]
-"vfox:pipenv" = "latest"
-
-[env]
-_.module = { pipenv = { pipfile = "backend/Pipfile" } }
-```
-
-### How It Works
-
-The module directive calls the plugin's `mise_env` hook which:
-
-1. Looks for a `Pipfile` in the current directory (or specified path)
-2. Runs `pipenv --venv` to find the associated virtualenv
-3. If a virtualenv exists, sets environment variables to activate it
+1. `VIRTUAL_ENV` to the virtualenv path
+2. `PIPENV_ACTIVE=1`
+3. Adds the virtualenv's `bin` directory to your `PATH`
 
 **Note:** The virtualenv must already exist (created via `pipenv install`).
 
