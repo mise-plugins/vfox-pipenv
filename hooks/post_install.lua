@@ -1,10 +1,16 @@
 --- Post-installation hook that creates a venv and installs pipenv.
 --- @param ctx table
 --- @field ctx.rootPath string SDK installation root path
---- @field ctx.version string The version being installed
+--- @field ctx.sdkInfo table SDK info containing version
 function PLUGIN:PostInstall(ctx)
     local rootPath = ctx.rootPath
-    local version = ctx.version
+
+    -- Extract version from rootPath (e.g., /path/to/installs/pipenv/2024.0.1)
+    -- The version is the last component of the path
+    local version = rootPath:match("([^/\\]+)$")
+    if not version then
+        error("Could not extract version from rootPath: " .. rootPath)
+    end
 
     -- Find Python interpreter
     local python_cmd = nil
